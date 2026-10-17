@@ -1,43 +1,43 @@
-const modelo = require('../../modelo/cliente/RegistroClienteModelo');
+const modelo = require('../../modelo/clientes/CrearClienteModelo');
 
-class RegistroClienteControlador {
+class CrearClienteControlador {
     // Función para registrar nuevo cliente desde su propia cuenta
     static async registrar(req, res) {
         const { t1: numeroD, t2: nom, t3: tel, t4: email, t5: contras } = req.body;
 
         // ------------👁️‍🗨️ Validaciones👁️‍🗨️----------------
         // 1. Validar campos vacíos
-        const errorCampos = RegistroClienteControlador.verCampos(numeroD, nom, tel, email, contras);
+        const errorCampos = CrearClienteControlador.verCampos(numeroD, nom, tel, email, contras);
         if (errorCampos) {
             return res.status(400).json({ error: errorCampos });
         }
 
         // 2. Validar documento (entre 8 y 10 dígitos)
-        const errorIde = RegistroClienteControlador.verIde(numeroD);
+        const errorIde = CrearClienteControlador.verIde(numeroD);
         if (errorIde) {
             return res.status(400).json({ error: errorIde });
         }
 
         // 3. Validar nombres completos
-        const errorNom = RegistroClienteControlador.verNom(nom);
+        const errorNom = CrearClienteControlador.verNom(nom);
         if (errorNom) {
             return res.status(400).json({ error: errorNom });
         }
 
         // 4. Validar teléfono (exactamente 10 dígitos)
-        const errorTel = RegistroClienteControlador.verTel(tel);
+        const errorTel = CrearClienteControlador.verTel(tel);
         if (errorTel) {
             return res.status(400).json({ error: errorTel });
         }
 
         // 5. Validar correo electrónico
-        const errorEmail = RegistroClienteControlador.verEmail(email);
+        const errorEmail = CrearClienteControlador.verEmail(email);
         if (errorEmail) {
             return res.status(400).json({ error: errorEmail });
         }
 
         // 6. Validar contraseña segura
-        const errorKey = RegistroClienteControlador.verKey(contras);
+        const errorKey = CrearClienteControlador.verKey(contras);
         if (errorKey) {
             return res.status(400).json({ error: errorKey });
         }
@@ -108,4 +108,4 @@ class RegistroClienteControlador {
     }
 }
 
-module.exports = RegistroClienteControlador;
+module.exports = CrearClienteControlador;

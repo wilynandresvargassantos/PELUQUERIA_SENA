@@ -1,14 +1,11 @@
 const express = require('express');
 const cors = require('cors');
-const rutaAdminSeguridad = require('./vista/admin/RutaAdminSeguridad');
-const RutaCrearCliente = require('./vista/admin/RutaCrearCliente');
-const rutaRegistroCliente = require('./vista/cliente/RutaRegistroCliente');
-const rutaLoginCliente = require('./vista/cliente/RutaLoginCliente');
-const rutaCrearTrabajador = require('./vista/admin/RutaCrearTrabajador');
-const rutaLoginTrabajador = require('./vista/trabajador/RutaLoginTrabajador');
-//const rutaadmin = require('./vista/AdminRutas');
+const RutasAdmin = require('./vista/admin/RutasAdmin');
+const RutasClientes = require('./vista/clientes/RutasClientes');
+const RutasTrabajadores = require('./vista/trabajadores/RutasTrabajadores');
+
 const app = express();
-const PORT = process.env.PORT || 3333;
+const PORT = process.env.PORT || 5020;
 
 // Middleware
 app.use(cors({
@@ -21,16 +18,12 @@ app.use(cors({
 // Middleware para parseo de solicitudes
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-//app.use(express.static(path.join(__dirname, 'public'))); 
 
-// Rutas 
-app.use('/', rutaAdminSeguridad);
-app.use('/', RutaCrearCliente);
-app.use('/', rutaRegistroCliente);
-app.use('/', rutaLoginCliente);
-app.use('/', rutaCrearTrabajador);
-app.use('/', rutaLoginTrabajador);
-//app.use('/seguridad', rutaadmin);
+// Rutas agrupadas
+app.use('/', RutasAdmin);
+app.use('/', RutasClientes);
+app.use('/', RutasTrabajadores);
+
 app.get('/', (req, res) => {
     res.send('Bienvenido a la API de la peluquería');
 });

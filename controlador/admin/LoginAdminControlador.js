@@ -28,7 +28,7 @@ class LoginAdminControlador {
             }
 
             // 3. Verificar rol
-            if (admin.rol !== 'Admin') {
+           if (admin.rol !== 'SuperAdmin' && admin.rol !== 'Admin') {
                 return res.status(403).json({ error: 'Acceso denegado: no posee privilegios de administrador.' });
             }
 

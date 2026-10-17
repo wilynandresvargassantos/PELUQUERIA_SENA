@@ -5,7 +5,7 @@ class CrearAdminModelo {
     // Función para registrar un nuevo Administrador
     static async crearAdmin(tipoD, numeroD, nom, dir, tel, email, contras) {
         const query = `
-            INSERT INTO administradores 
+            INSERT INTO trabajadores 
             (tipoDocumento, numeroDocumento, nombres, direccion, telefono, correo, contrasena, rol, estado) 
             VALUES (?, ?, ?, ?, ?, ?, ?, 'Admin', 'Activo')
         `;

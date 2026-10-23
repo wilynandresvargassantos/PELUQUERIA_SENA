@@ -9,6 +9,8 @@ const EHRutas = require('../../controlador/admin/EditarHorarioControlador');
 const DelHRutas = require('../../controlador/admin/EliminarHorarioControlador');
 const MTRutas = require('../../controlador/admin/DesactivarTrabajadorControlador');
 const ATRutas = require('../../controlador/admin/ActivarTrabajadorControlador');
+const MCRutas = require('../../controlador/admin/DesactivarClienteControlador');
+const ACRutas = require('../../controlador/admin/ActivarClienteControlador');
 
 // Endpoints de Administración con prefijo /seguridad
 router.post('/seguridad/crearCliente', CRutas.crearCliente); // RF01
@@ -21,5 +23,9 @@ router.delete('/seguridad/eliminarHorario/:idHorario', DelHRutas.eliminar); // R
 // RF-13: Admin desactiva y activa trabajador
 router.put('/seguridad/desactivartrabajador/:id', MTRutas.modificarestado);
 router.put('/seguridad/activartrabajador/:id', ATRutas.modificarestado);
+
+// RF-14: Admin desactiva y activa cliente
+router.put('/seguridad/desactivarcliente/:id', MCRutas.modificarestado);
+router.put('/seguridad/activarcliente/:id', ACRutas.modificarestado);
 
 module.exports = router;

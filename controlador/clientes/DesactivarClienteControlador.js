@@ -2,7 +2,8 @@ const modelo = require('../../modelo/clientes/DesactivarClienteModelo');
 
 class DesactivarClienteControlador {
     static async desactivar(req, res) {
-        const { id } = req.params; // Recibe el número de documento del cliente por la URL
+       
+     const { numeroDocumento: id } = req.params;
 
         if (!id) {
             return res.status(400).json({ error: 'El identificador del cliente es obligatorio.' });

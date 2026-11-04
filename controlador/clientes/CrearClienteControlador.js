@@ -3,40 +3,46 @@ const modelo = require('../../modelo/clientes/CrearClienteModelo');
 class CrearClienteControlador {
     // Función para registrar nuevo cliente desde su propia cuenta
     static async registrar(req, res) {
-        const { t1: numeroD, t2: nom, t3: tel, t4: email, t5: contras } = req.body;
+        const { t1: tipoD, t2: numeroD, t3: nom, t4: tel, t5: email, t6: contras } = req.body;
 
-        // ------------👁️‍🗨️ Validaciones👁️‍🗨️----------------
+        // ------------ Validaciones ------------
         // 1. Validar campos vacíos
-        const errorCampos = CrearClienteControlador.verCampos(numeroD, nom, tel, email, contras);
+        const errorCampos = CrearClienteControlador.verCampos(tipoD, numeroD, nom, tel, email, contras);
         if (errorCampos) {
             return res.status(400).json({ error: errorCampos });
         }
 
-        // 2. Validar documento (entre 8 y 10 dígitos)
+        // 2. Validar tipo de documento
+        const errorTipoD = CrearClienteControlador.verTipoD(tipoD);
+        if (errorTipoD) {
+            return res.status(400).json({ error: errorTipoD });
+        }
+
+        // 3. Validar documento (entre 8 y 10 dígitos)
         const errorIde = CrearClienteControlador.verIde(numeroD);
         if (errorIde) {
             return res.status(400).json({ error: errorIde });
         }
 
-        // 3. Validar nombres completos
+        // 4. Validar nombres completos
         const errorNom = CrearClienteControlador.verNom(nom);
         if (errorNom) {
             return res.status(400).json({ error: errorNom });
         }
 
-        // 4. Validar teléfono (exactamente 10 dígitos)
+        // 5. Validar teléfono (exactamente 10 dígitos)
         const errorTel = CrearClienteControlador.verTel(tel);
         if (errorTel) {
             return res.status(400).json({ error: errorTel });
         }
 
-        // 5. Validar correo electrónico
+        // 6. Validar correo electrónico
         const errorEmail = CrearClienteControlador.verEmail(email);
         if (errorEmail) {
             return res.status(400).json({ error: errorEmail });
         }
 
-        // 6. Validar contraseña segura
+        // 7. Validar contraseña segura
         const errorKey = CrearClienteControlador.verKey(contras);
         if (errorKey) {
             return res.status(400).json({ error: errorKey });
@@ -44,7 +50,7 @@ class CrearClienteControlador {
 
         // Guardar en la base de datos
         try {
-            const result = await modelo.registrarCliente(numeroD, nom, tel, email, contras);
+            const result = await modelo.registrarCliente(tipoD, numeroD, nom, tel, email, contras);
             res.status(201).json({ 
                 mensaje: 'Cuenta creada con éxito.', 
                 id: result.insertId 
@@ -62,15 +68,24 @@ class CrearClienteControlador {
     }
 
     // ------------------- Métodos de Validación -------------------
-    static verCampos(numeroD, nom, tel, email, contras) {
-        if (!numeroD || !nom || !tel || !email || !contras) {
+    static verCampos(tipoD, numeroD, nom, tel, email, contras) {
+        if (!tipoD || !numeroD || !nom || !tel || !email || !contras) {
             return 'Todos los campos son obligatorios.';
         }
         return null;
     }
 
+    static verTipoD(tipoD) {
+        const tip = /^[A-Z\s]{2,3}$/;
+        if (!tip.test(tipoD)) {
+            return 'Tipo de documento inválido. Debe ser CC, TI o CE.';
+        }
+        return null;
+    }
+
     static verIde(numeroD) {
-        if (!/^\d{8,10}$/.test(numeroD)) {
+        const docLimpio = String(numeroD || '').trim();
+        if (!/^\d{8,10}$/.test(docLimpio)) {
             return 'La identificación debe tener entre 8 y 10 dígitos numéricos.';
         }
         return null;

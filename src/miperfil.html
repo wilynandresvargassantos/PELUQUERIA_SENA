@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Peluquería SENA</title>
+    
+    <!-- 🛡️ SCRIPT DE SEGURIDAD -->
+    <script>
+        const token = localStorage.getItem('tokenSena');
+        const usuario = localStorage.getItem('usuarioSena');
+
+        if (!token || !usuario) {
+            window.location.replace('login.html');
+        }
+    </script>
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- TU HOJA DE ESTILOS -->
+    <link rel="stylesheet" href="./css/estilomenu.css?v=2">
+</head>
+<body>
+
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- MENÚ LATERAL (SIDEBAR) -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <i class="fa-solid fa-scissors"></i>
+                <span>SENA</span>
+            </div>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li>
+                <a href="menucliente.html">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Inicio</span>
+                </a>
+            </li>
+            <li>
+                <a href="miscitas.html">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>Mis Citas</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Historial</span>
+                </a>
+            </li>
+            <li>
+                <a href="miperfil.html" class="active">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span>Mi Perfil</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="cerrarSesion()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Cerrar Sesión</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+        <header class="top-header">
+            <button class="menu-toggle" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            
+            <div class="user-info">
+                <div style="text-align: right;">
+                    <h2 id="nombreUsuarioDisplay">Cargando...</h2>
+                    <span>Cliente Registrado</span>
+                </div>
+                <div class="user-avatar" id="inicialUsuario">
+                    C
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <div class="welcome-banner">
+                <h1>Mi Perfil de Cliente 👤</h1>
+                <p>Consulta los datos de tu sesión o desactiva tu cuenta en la Peluquería SENA.</p>
+            </div>
+
+            <div class="cards-grid">
+                <!-- Tarjeta 1: Datos del Cliente -->
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-id-card"></i>
+                    </div>
+                    <h3>Nombre Registrado</h3>
+                    <p id="perfilNombre">Cargando...</p>
+                    <br>
+                    <h3>Correo Electrónico</h3>
+                    <p id="perfilCorreo" class="card-text-sm">Cargando...</p>
+                </div>
+
+                <!-- Tarjeta 2: Desactivar Cuenta (RF-07) -->
+                <div class="card card-danger">
+                    <div class="card-icon card-icon-danger">
+                        <i class="fa-solid fa-user-slash"></i>
+                    </div>
+                    <h3>Desactivar Cuenta (RF-07)</h3>
+                    <p class="card-desc">
+                        Ingresa tu número de documento para confirmar la desactivación de tu cuenta.
+                    </p>
+
+                    <div class="form-group-menu">
+                        <input type="text" id="inputDocumento" class="form-input-menu" placeholder="Número de Documento">
+                    </div>
+
+                    <button id="btnDesactivarCuenta" class="btn-danger-menu">
+                        <i class="fa-solid fa-ban"></i>
+                        <span>Desactivar Mi Cuenta</span>
+                    </button>
+
+                    <div id="mensajePerfil" class="mensaje-alerta"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="./js/jsmenu.js"></script>
+    <script src="./js/jsmiperfil.js"></script>
+</body>
+</html>

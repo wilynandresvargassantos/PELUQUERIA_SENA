@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Citas - Peluquería SENA</title>
+    
+    <!-- 🛡️ SCRIPT DE SEGURIDAD -->
+    <script>
+        const token = localStorage.getItem('tokenSena');
+        const usuario = localStorage.getItem('usuarioSena');
+
+        if (!token || !usuario) {
+            window.location.replace('login.html');
+        }
+    </script>
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- TU HOJA DE ESTILOS -->
+    <link rel="stylesheet" href="./css/estilomenu.css?v=3">
+</head>
+<body>
+
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- MENÚ LATERAL (SIDEBAR) -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <i class="fa-solid fa-scissors"></i>
+                <span>SENA</span>
+            </div>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li>
+                <a href="menucliente.html">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Inicio</span>
+                </a>
+            </li>
+            <li>
+                <a href="miscitas.html" class="active">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>Mis Citas</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Historial</span>
+                </a>
+            </li>
+            <li>
+                <a href="miperfil.html">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span>Mi Perfil</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="cerrarSesion()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Cerrar Sesión</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+        <header class="top-header">
+            <button class="menu-toggle" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            
+            <div class="user-info">
+                <div style="text-align: right;">
+                    <h2 id="nombreUsuarioDisplay">Cargando...</h2>
+                    <span>Cliente Registrado</span>
+                </div>
+                <div class="user-avatar" id="inicialUsuario">
+                    C
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <div class="welcome-banner">
+                <h1>Mis Citas y Horarios 📅</h1>
+                <p>Consulta los horarios disponibles de nuestros estilistas y reprograma o cancela tu cita.</p>
+            </div>
+
+            <!-- Tarjeta RF-06: Horarios Disponibles -->
+            <div class="card card-full">
+                <div class="card-header-flex">
+                    <div>
+                        <h3 class="card-title-dark">
+                            <i class="fa-solid fa-clock"></i> Horarios Disponibles <!--(RF-06)-->
+                        </h3>
+                        <span id="totalHorarios" class="card-subtitle-sm">Consultando horarios...</span>
+                    </div>
+
+                    <div class="filter-bar">
+                        <input type="number" id="filtroTrabajador" class="form-input-menu filter-input" placeholder="ID Trabajador (opcional)">
+                        <button id="btnFiltrarHorarios" class="btn-primary-menu btn-auto">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>Buscar</span>
+                        </button>
+                        <button id="btnTodosHorarios" class="btn-secondary-menu">
+                            Ver Todos
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="tabla-sena">
+                        <thead>
+                            <tr>
+                                <th>ID Horario</th>
+                                <th>Trabajador</th>
+                                <th>Rol</th>
+                                <th>Fecha</th>
+                                <th>Hora Inicio</th>
+                                <th>Hora Final</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaHorariosBody">
+                            <tr>
+                                <td colspan="7">Cargando información...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tarjetas RF-15: Reprogramar y Cancelar Cita -->
+            <div class="cards-grid">
+                <!-- Reprogramar Cita -->
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-calendar-day"></i>
+                    </div>
+                    <h3 class="card-title-dark">Reprogramar Cita <!-- (RF-15) --></h3>
+                    <p class="card-desc">
+                        Ingresa el ID de tu cita y selecciona el nuevo horario disponible.
+                    </p>
+
+                    <div class="form-group-menu">
+                        <label for="idCitaReprogramar" class="form-label-menu">ID de la Cita (idRegHorario):</label>
+                        <input type="number" id="idCitaReprogramar" class="form-input-menu" placeholder="Ej. 1">
+                    </div>
+
+                    <div class="form-group-menu">
+                        <label for="selectNuevoHorario" class="form-label-menu">Nuevo Horario Disponible:</label>
+                        <select id="selectNuevoHorario" class="form-input-menu">
+                            <option value="">-- Selecciona un horario --</option>
+                        </select>
+                    </div>
+
+                    <button id="btnReprogramarCita" class="btn-primary-menu">
+                        <i class="fa-solid fa-rotate"></i>
+                        <span>Reprogramar Cita</span>
+                    </button>
+
+                    <div id="mensajeReprogramar" class="mensaje-alerta"></div>
+                </div>
+
+                <!-- Cancelar Cita -->
+                <div class="card card-danger">
+                    <div class="card-icon card-icon-danger">
+                        <i class="fa-solid fa-calendar-xmark"></i>
+                    </div>
+                    <h3 class="card-title-dark">Cancelar Cita <!-- (RF-15) --> </h3>
+                    <p class="card-desc">
+                        Ingresa el ID de la cita que deseas cancelar para liberar el turno.
+                    </p>
+
+                    <div class="form-group-menu">
+                        <label for="idCitaCancelar" class="form-label-menu">ID de la Cita (idRegHorario):</label>
+                        <input type="number" id="idCitaCancelar" class="form-input-menu" placeholder="Ej. 1">
+                    </div>
+
+                    <button id="btnCancelarCita" class="btn-danger-menu">
+                        <i class="fa-solid fa-xmark"></i>
+                        <span>Cancelar Cita</span>
+                    </button>
+
+                    <div id="mensajeCancelar" class="mensaje-alerta"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="./js/jsmenu.js"></script>
+    <script src="./js/jsmiscitas.js"></script>
+</body>
+</html>

@@ -2,14 +2,14 @@ const bcrypt = require('bcrypt');
 const dbService = require('../bd/Conexion'); // o la ruta de tu conexion
 
 class CrearClienteModelo {
-    static async registrarCliente(tipoD, numeroD, nom, tel, email, contras) {
+    static async registrarCliente(tipoD, numeroD, nom, dir, tel, email, contras) {
         const salt = await bcrypt.genSalt(10);
         const contrasenaHash = await bcrypt.hash(contras, salt);
 
         const query = `
             INSERT INTO clientes 
-            (tipoDocumento, numeroDocumento, nombres, telefono, correo, contrasena, estado) 
-            VALUES (?, ?, ?, ?, ?, ?, 'Activo')
+            (tipoDocumento, numeroDocumento, nombres, direccion, telefono, correo, contrasena, estado) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, 'Activo')
         `;
 
         try {
@@ -17,6 +17,7 @@ class CrearClienteModelo {
                 tipoD,
                 numeroD,
                 nom,
+                dir,
                 tel,
                 email,
                 contrasenaHash

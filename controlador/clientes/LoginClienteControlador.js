@@ -30,14 +30,15 @@ class LoginClienteControlador {
                 return res.status(401).json({ error: 'Credenciales inválidas. Correo o contraseña incorrectos.' });
             }
 
-           // Inicio de sesión exitoso
-            res.status(200).json({
-                mensaje: 'Inicio de sesión exitoso.',
-                usuario: {
-                    nombres: cliente.nombres,
-                    correo: cliente.correo
-                }
-            });
+          // Inicio de sesión exitoso
+           res.status(200).json({
+               mensaje: 'Inicio de sesión exitoso.',
+               token: 'token-sesion-' + Date.now(),
+               usuario: {
+                   nombre: cliente.nombres,
+                   correo: cliente.correo
+               }
+           });
         } catch (err) {
             return res.status(500).json({ error: 'Error inesperado del servidor: ' + err.message });
         }
